@@ -1,24 +1,29 @@
 "use client";
 
+import { useSession } from "@/lib/auth-client";
 import { postAppointData } from "@/lib/data";
 import { Button, Input, Label, Modal, Surface, TextField, Description, ListBox, Select, FieldError, DateField, TimeField, Avatar } from "@heroui/react";
 import { useState } from "react";
-import { FaUserDoctor } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 export function BookAppointModal({ doctor }) {
+    const [loading, setLoading] = useState(false);
+
+    const { data: session } = useSession()
+    const user = session?.user
     const { _id, name, image } = doctor
 
     const [gender, setGender] = useState('')
 
-    const handleAppoint = (e) => {
+    const handleAppoint = async (e) => {
         e.preventDefault();
-
+        setLoading(true)
         const formData = new FormData(e.target);
 
         const data = Object.fromEntries(formData.entries());
         const appointData = {
             doctorId: _id,
-            userEmail: data.UserEmail,
+            userEmail: user?.email,
             doctorName: data.doctorName,
             date: data.date,
             time: data.time,
@@ -26,9 +31,16 @@ export function BookAppointModal({ doctor }) {
             number: data.number,
             gender: gender
         }
+        const datas = await postAppointData(appointData)
 
-        postAppointData(appointData)
-        console.log(appointData)
+        if (datas.success) {
+            toast.success(datas.message)
+            setLoading(false)
+        }
+        if (!datas.success) {
+            toast.error(datas.message)
+            setLoading(false)
+        }
     };
 
     return (
@@ -53,7 +65,7 @@ export function BookAppointModal({ doctor }) {
                             <Surface variant="default">
                                 <form onSubmit={handleAppoint} className="flex flex-col gap-4">
                                     {/* UserEmail */}
-                                    <TextField isReadOnly defaultValue="john@example.com" isRequired name="UserEmail" type="email">
+                                    <TextField isReadOnly defaultValue={user?.email} isRequired name="UserEmail" type="email">
                                         <Label>User email</Label>
                                         <Input placeholder="john@example.com" />
                                         <FieldError />
@@ -135,7 +147,7 @@ export function BookAppointModal({ doctor }) {
                                         <Button slot="close" variant="secondary">
                                             Cancel
                                         </Button>
-                                        <Button type="submit">Submit</Button>
+                                        <Button type="submit">{loading ? "Booking..." : "Submit"}</Button>
                                     </div>
                                 </form>
                             </Surface>

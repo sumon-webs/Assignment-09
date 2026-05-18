@@ -51,7 +51,13 @@ function RegisterPage() {
             setLoading(false)
         }
     };
+    const handlegoogleLogin = async () => {
+        toast.loading("Redirecting to Google...");
 
+        await authClient.signIn.social({
+            provider: "google",
+        });
+    };
     return (
         <div className=" container mx-auto mt-23 bg-gray-100 px-4">
 
@@ -159,14 +165,14 @@ function RegisterPage() {
                     {/* Buttons */}
                     <div className="flex gap-2 pt-2">
                         <Button type="submit" className={'w-full'} >
-                            {loading ? <FaSpinner className="animate-spin"/> : "Sing in"}
+                            {loading ? <FaSpinner className="animate-spin" /> : "Sing in"}
                         </Button>
                     </div>
 
                 </Form>
                 <div className=" space-y-3 text-center">
                     <p className=" text-center ">OR</p>
-                    <Button fullWidth variant="outline"><FaGoogle className="text-red-500" />Continue with google</Button>
+                    <Button onClick={handlegoogleLogin} fullWidth variant="outline"><FaGoogle className="text-red-500" />Continue with google</Button>
                     <p className="text-gray-300 font-semibold">Have a Accoutn?
                         <Link className="text-blue-500 hover:border-b-0" href={'/log-in'}> Log in</Link>
                     </p>
