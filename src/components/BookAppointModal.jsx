@@ -1,5 +1,6 @@
 "use client";
 
+import { postAppointData } from "@/lib/data";
 import { Button, Input, Label, Modal, Surface, TextField, Description, ListBox, Select, FieldError, DateField, TimeField, Avatar } from "@heroui/react";
 import { useState } from "react";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -26,6 +27,7 @@ export function BookAppointModal({ doctor }) {
             gender: gender
         }
 
+        postAppointData(appointData)
         console.log(appointData)
     };
 

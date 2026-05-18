@@ -5,6 +5,7 @@ import { Button } from "@heroui/react";
 import NavActiveLink from "./NavActiveLink";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 
 const NavBar = () => {
 
@@ -59,20 +60,24 @@ const NavBar = () => {
                 {/* Desktop Buttons */}
                 <div className="hidden md:flex items-center gap-3">
 
-                    <Button
-                        variant="light"
-                        className="font-medium"
-                    >
-                        Login
-                    </Button>
+                    <Link href={'/log-in'}>
+                        <Button
+                            variant="bordered"
+                            className="w-full font-medium"
+                        >
+                            Login
+                        </Button>
+                    </Link>
 
-                    <Button
-                        color="primary"
-                        radius="full"
-                        className="font-semibold px-6 shadow-md"
-                    >
-                        Get Started
-                    </Button>
+                    <Link href={'/register'}>
+                        <Button
+                            color="primary"
+                            radius="full"
+                            className="w-full font-semibold"
+                        >
+                            Register
+                        </Button>
+                    </Link>
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -117,20 +122,24 @@ const NavBar = () => {
                     {/* Mobile Buttons */}
                     <div className="flex flex-col gap-3 pt-2">
 
-                        <Button
-                            variant="bordered"
-                            className="w-full font-medium"
-                        >
-                            Login
-                        </Button>
+                        <Link href={'/log-in'}>
+                            <Button
+                                variant="bordered"
+                                className="w-full font-medium"
+                            >
+                                Login
+                            </Button>
+                        </Link>
 
-                        <Button
-                            color="primary"
-                            radius="full"
-                            className="w-full font-semibold"
-                        >
-                            Get Started
-                        </Button>
+                        <Link href={'/register'}>
+                            <Button
+                                color="primary"
+                                radius="full"
+                                className="w-full font-semibold"
+                            >
+                                Register
+                            </Button>
+                        </Link>
                     </div>
 
                 </div>
