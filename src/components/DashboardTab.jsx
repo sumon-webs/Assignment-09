@@ -23,7 +23,7 @@ const DashboardTab = ({ bookings, user }) => {
                 </div>
 
                 {/* Tabs Wrapper */}
-                <div className="max-w-5xl mx-auto  rounded-2xl p-4">
+                <div className=" mx-auto  rounded-2xl p-4">
 
                     <Tabs>
 

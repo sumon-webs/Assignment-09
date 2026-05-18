@@ -6,18 +6,31 @@ import { headers } from "next/headers";
 const DashBoardPage = async () => {
     const session = await auth.api.getSession({
         headers: await headers()
-    })
-    const user = session?.user
-    const userId = user?.id
+    });
 
-    const data = await getMyAppointData(userId)
-    const bookings = data?.data
+    const user = session?.user;
+    const userId = user?.id;
+
+    if (!userId) {
+        return (
+            <div className="text-red-500 text-center mt-10">
+                Please login first
+            </div>
+        );
+    }
+
+    const data = await getMyAppointData(userId);
+    const bookings = data?.data;
 
     if (!data.success) {
         return (
-            alert(data.meassage)
+            <div className="text-red-500 text-center mt-10">
+                {data.message || "Failed to load data"}
+            </div>
         );
     }
+
+
     return (
         <div>
             <DashboardTab user={user} bookings={bookings} />

@@ -2,6 +2,7 @@ import { deleteAppoinData } from "@/lib/action";
 import { Card, Button, AlertDialog } from "@heroui/react";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
+import { BookingUpdateModal } from "../BookingUpdateModal";
 
 const BookingCard = ({ booking, onUpdate, onDelete, user }) => {
     const { _id, patientName, date, time, reason } = booking;
@@ -37,12 +38,8 @@ const BookingCard = ({ booking, onUpdate, onDelete, user }) => {
 
             {/* Actions */}
             <div className="flex gap-2 p-4 pt-2">
-                <Button
-                    variant="outline"
-                    onPress={() => onUpdate?.(booking)}
-                >
-                    <onUpdate />  Update
-                </Button>
+
+                <BookingUpdateModal user={user} booking={booking} />
 
                 <AlertDialog>
                     <Button variant="danger">Delete </Button>

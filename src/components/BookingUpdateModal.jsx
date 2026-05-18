@@ -1,19 +1,39 @@
 "use client";
 
-import { useSession } from "@/lib/auth-client";
-import { postAppointData } from "@/lib/data";
-import { Button, Input, Label, Modal, Surface, TextField, Description, ListBox, Select, FieldError, DateField, TimeField, Avatar } from "@heroui/react";
+import { updateAppoint } from "@/lib/action";
+import {
+    Button,
+    Input,
+    Label,
+    Modal,
+    Surface,
+    TextField,
+    ListBox,
+    Select,
+    FieldError,
+    DateField,
+    TimeField,
+} from "@heroui/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export function BookAppointModal({ doctor }) {
-    const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(false);
+export function BookingUpdateModal({ booking, user }) {
+    const router = useRouter()
 
-    const { data: session } = useSession()
-    const user = session?.user
-    const { _id, name, image } = doctor
-    const [gender, setGender] = useState('')
+    const [loading, setLoading] = useState(false);
+    const [gender, setGender] = useState(booking?.gender || "");
+
+    const userId = user?.id;
+
+    const {
+        _id,
+        doctorName,
+        userEmail,
+        patientName,
+        number,
+        reason,
+    } = booking;
 
     const handleAppoint = async (e) => {
         e.preventDefault();
@@ -32,82 +52,81 @@ export function BookAppointModal({ doctor }) {
             time: data.time,
             reason: data.reason,
             number: data.number,
-            gender: gender
+            gender: gender,
         };
-        console.log(appointData)
 
-        const res = await postAppointData(appointData);
+        const res = await updateAppoint(userId, _id, appointData);
 
         setLoading(false);
 
         if (res.success) {
             toast.success(res.message);
-
+            router.push('/dashboard')
             e.target.reset();
             setGender("");
-            setOpen(false);
         } else {
             toast.error(res.message);
         }
     };
 
     return (
-        <Modal open={open} onOpenChange={setOpen}>
-            <Button  onClick={() => setOpen(true)}>
-                Book Appointment
-            </Button>
+        <Modal>
+            <Button>Update</Button>
+
             <Modal.Backdrop>
                 <Modal.Container placement="auto">
                     <Modal.Dialog className="sm:max-w-lg">
-                        <Modal.CloseTrigger />
-                        <div className=" flex justify-center text-center">
-                            <Modal.Header >
-                                <Avatar className=" mx-auto">
-                                    <Avatar.Image alt="John Doe" src={image} />
-                                    <Avatar.Fallback>JD</Avatar.Fallback>
-                                </Avatar>
-                                <p className="mt-1.5 text-sm leading-5 text-muted">
-                                    Fill the form for Appoint with {name}
-                                </p>
-                            </Modal.Header>
-                        </div>
                         <Modal.Body className="p-6">
                             <Surface variant="default">
                                 <form onSubmit={handleAppoint} className="flex flex-col gap-4">
-                                    {/* UserEmail */}
-                                    <TextField  isReadOnly defaultValue={user?.email} isRequired name="UserEmail" type="email">
+
+                                    {/* Email */}
+                                    <TextField
+                                        defaultValue={userEmail}
+                                        isReadOnly
+                                        isRequired
+                                        name="userEmail"
+                                    >
                                         <Label>User email</Label>
-                                        <Input placeholder="john@example.com" />
+                                        <Input />
                                         <FieldError />
                                     </TextField>
 
-                                    {/* Doctor Name */}
-                                    <TextField isReadOnly defaultValue={name} isRequired className="w-full" name="doctorName" type="text">
+                                    {/* Doctor */}
+                                    <TextField
+                                        defaultValue={doctorName}
+                                        isReadOnly
+                                        isRequired
+                                        name="doctorName"
+                                    >
                                         <Label>Doctor Name</Label>
                                         <Input />
-
                                     </TextField>
 
                                     {/* Name */}
-                                    <TextField isRequired className="w-full" name="name" type="text">
+                                    <TextField
+                                        defaultValue={patientName}
+                                        isRequired
+                                        name="name"
+                                    >
                                         <Label>Full Name</Label>
                                         <Input placeholder="Enter your name" />
                                     </TextField>
 
-                                    <div className=" flex gap-2">
+                                    <div className="flex gap-2">
 
                                         {/* Gender */}
-                                        <TextField className="w-[50%]">
+                                        <div className="w-[50%]">
                                             <Label>Gender</Label>
 
                                             <Select
+                                                isRequired
                                                 onSelectionChange={(keys) => {
                                                     const value = [...(keys || [])][0];
                                                     if (typeof value === "string") {
                                                         setGender(value);
                                                     }
                                                 }}
-                                                isRequired
                                             >
                                                 <Select.Trigger>
                                                     <Select.Value placeholder="Select gender" />
@@ -122,44 +141,56 @@ export function BookAppointModal({ doctor }) {
                                                     </ListBox>
                                                 </Select.Popover>
                                             </Select>
-                                        </TextField>
-                                        {/* number */}
-                                        <TextField isRequired className="w-[50%]" name="number" type="text">
+                                        </div>
+
+                                        {/* Number */}
+                                        <TextField
+                                            defaultValue={number}
+                                            isRequired
+                                            name="number"
+                                            className="w-[50%]"
+                                        >
                                             <Label>Number</Label>
-                                            <Input placeholder="Enter your number" />
+                                            <Input />
                                         </TextField>
                                     </div>
 
-                                    <div className=" flex gap-2">
+                                    <div className="flex gap-2">
+
                                         {/* Date */}
-                                        <DateField isRequired className={'w-[50%]'} name="date">
+                                        <DateField isRequired name="date" className="w-[50%]">
                                             <Label>Date</Label>
                                             <DateField.Group>
-                                                <DateField.Input>{(segment) => <DateField.Segment segment={segment} />}</DateField.Input>
+                                                <DateField.Input>
+                                                    {(segment) => <DateField.Segment segment={segment} />}
+                                                </DateField.Input>
                                             </DateField.Group>
                                         </DateField>
 
                                         {/* Time */}
-                                        <TimeField isRequired className="w-[256px]" name="time">
+                                        <TimeField isRequired name="time" className="w-[50%]">
                                             <Label>Time</Label>
                                             <TimeField.Group>
-                                                <TimeField.Input>{(segment) => <TimeField.Segment segment={segment} />}</TimeField.Input>
+                                                <TimeField.Input>
+                                                    {(segment) => <TimeField.Segment segment={segment} />}
+                                                </TimeField.Input>
                                             </TimeField.Group>
                                         </TimeField>
                                     </div>
 
                                     {/* Reason */}
-                                    <TextField className="w-full" name="reason" type="text">
+                                    <TextField defaultValue={reason} name="reason">
                                         <Label>Reason</Label>
-                                        <Input placeholder="Enter your Reason" />
+                                        <Input />
                                     </TextField>
 
-                                    <div className=" space-x-1.5">
+                                    <div className="space-x-2">
                                         <Button slot="close" variant="secondary">
                                             Cancel
                                         </Button>
-                                        <Button type="submit">
-                                            {loading ? "Booking..." : "Submit"}
+
+                                        <Button type="submit" isDisabled={loading}>
+                                            {loading ? "Updating..." : "Update"}
                                         </Button>
                                     </div>
                                 </form>
@@ -167,7 +198,7 @@ export function BookAppointModal({ doctor }) {
                         </Modal.Body>
                     </Modal.Dialog>
                 </Modal.Container>
-            </Modal.Backdrop >
-        </Modal >
+            </Modal.Backdrop>
+        </Modal>
     );
 }
