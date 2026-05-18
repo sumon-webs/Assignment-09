@@ -1,6 +1,7 @@
 import { Badge } from "@heroui/react";
 import { Star } from "lucide-react";
 import Image from "next/image";
+import { BookAppointModal } from "../BookAppointModal";
 
 const DoctorDetailsCard = ({ doctor }) => {
     return (
@@ -68,6 +69,8 @@ const DoctorDetailsCard = ({ doctor }) => {
                             ))}
                         </div>
                     </div>
+                    {/* Get Appoint */}
+                    <BookAppointModal doctor={doctor} />
 
                 </div>
             </div>
