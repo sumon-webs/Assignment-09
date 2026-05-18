@@ -4,6 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import BookingCard from './cards/BookingCard';
 import Link from 'next/link';
+import ProfileCard from './cards/ProfileCard';
 
 const DashboardTab = ({ bookings, user }) => {
 
@@ -84,14 +85,32 @@ const DashboardTab = ({ bookings, user }) => {
                             </TabPanel>
 
                             <TabPanel>
-                                <div className="p-4 bg-green-50 rounded-xl">
-                                    <h2 className="text-lg font-semibold text-slate-800">
-                                        My Profile
-                                    </h2>
-                                    <p className="text-sm text-slate-600 mt-1">
-                                        Update your personal information here.
-                                    </p>
-                                </div>
+                                {user ? (
+                                    <ProfileCard user={user}/>
+
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-xl shadow-sm">
+
+                                        {/* Icon */}
+                                        <div className="text-5xl mb-3">📭</div>
+
+                                        {/* Text */}
+                                        <h2 className="text-lg font-semibold text-slate-800">
+                                            No Bookings Found
+                                        </h2>
+
+                                        <p className="text-sm text-slate-500 mt-1">
+                                            You don’t have any bookings yet. Start by booking your first appointment.
+                                        </p>
+
+                                        {/* Button (optional) */}
+                                        <Link href={'/all-apointments'}>
+                                            <button className="mt-4 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                                Book Now
+                                            </button>
+                                        </Link>
+                                    </div>
+                                )}
                             </TabPanel>
 
                         </div>
