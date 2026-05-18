@@ -11,13 +11,7 @@ const DashBoardPage = async () => {
     const user = session?.user;
     const userId = user?.id;
 
-    if (!userId) {
-        return (
-            <div className="text-red-500 text-center mt-10">
-                Please login first
-            </div>
-        );
-    }
+
 
     const data = await getMyAppointData(userId);
     const bookings = data?.data;
