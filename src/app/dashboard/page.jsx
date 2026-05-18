@@ -8,9 +8,9 @@ const DashBoardPage = async () => {
         headers: await headers()
     })
     const user = session?.user
-    const id = user?.id
+    const userId = user?.id
 
-    const data = await getMyAppointData(id)
+    const data = await getMyAppointData(userId)
     const bookings = data?.data
 
     if (!data.success) {
@@ -20,7 +20,7 @@ const DashBoardPage = async () => {
     }
     return (
         <div>
-            <DashboardTab bookings={bookings} />
+            <DashboardTab user={user} bookings={bookings} />
         </div>
     );
 };

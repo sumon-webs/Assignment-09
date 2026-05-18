@@ -3,8 +3,9 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import BookingCard from './cards/BookingCard';
+import Link from 'next/link';
 
-const DashboardTab = ({ bookings }) => {
+const DashboardTab = ({ bookings, user }) => {
 
     return (
         <div>
@@ -50,11 +51,36 @@ const DashboardTab = ({ bookings }) => {
                         <div className="mt-8 ">
 
                             <TabPanel>
-                                <div className=' space-y-3 w-52'>
-                                    {
-                                        bookings.map(booking => <BookingCard key={booking._id} booking={booking} />)
-                                    }
-                                </div>
+                                {bookings.length === 0 ? (
+                                    <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-xl shadow-sm">
+
+                                        {/* Icon */}
+                                        <div className="text-5xl mb-3">📭</div>
+
+                                        {/* Text */}
+                                        <h2 className="text-lg font-semibold text-slate-800">
+                                            No Bookings Found
+                                        </h2>
+
+                                        <p className="text-sm text-slate-500 mt-1">
+                                            You don’t have any bookings yet. Start by booking your first appointment.
+                                        </p>
+
+                                        {/* Button (optional) */}
+                                        <Link href={'/all-apointments'}>
+                                            <button className="mt-4 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                                Book Now
+                                            </button>
+                                        </Link>
+                                    </div>
+                                ) : (
+                                    <div className=' space-y-3 w-52'>
+                                        {
+                                            bookings.map(booking => <BookingCard user={user} key={booking._id} booking={booking} />)
+                                        }
+                                    </div>
+                                )}
+
                             </TabPanel>
 
                             <TabPanel>

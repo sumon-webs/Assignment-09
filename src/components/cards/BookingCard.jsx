@@ -1,7 +1,22 @@
-import { Card, Button ,AlertDialog} from "@heroui/react";
+import { deleteAppoinData } from "@/lib/action";
+import { Card, Button, AlertDialog } from "@heroui/react";
+import { redirect } from "next/navigation";
+import toast from "react-hot-toast";
 
-const BookingCard = ({ booking, onUpdate, onDelete }) => {
-    const { patientName, date, time, reason } = booking;
+const BookingCard = ({ booking, onUpdate, onDelete, user }) => {
+    const { _id, patientName, date, time, reason } = booking;
+
+    const handleDelete = async () => {
+        const data = await deleteAppoinData(user.id, _id)
+        if (data) {
+            toast.success(data.message)
+            redirect('/dashboard')
+        }
+
+        if (!data) {
+            return alert('data.message')
+        }
+    }
 
     return (
         <Card className="max-w-sm shadow-md rounded-xl" variant="tertiary">
@@ -49,7 +64,7 @@ const BookingCard = ({ booking, onUpdate, onDelete }) => {
                                     <Button slot="close" variant="tertiary">
                                         Cancel
                                     </Button>
-                                    <Button slot="close" variant="danger">
+                                    <Button onClick={handleDelete} slot="close" variant="danger">
                                         Delete Appointment
                                     </Button>
                                 </AlertDialog.Footer>
