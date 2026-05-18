@@ -1,13 +1,21 @@
-import { Button, Card } from "@heroui/react";
-import { MapPin } from "lucide-react";
+import { Badge, Button, Card } from "@heroui/react";
+import { MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const DoctorCard = ({ doctor }) => {
-    const { _id, name, specialty, image, experience, location } = doctor;
+    const { _id, rating, name, specialty, image, experience, location } = doctor;
 
     return (
-        <Card className="group overflow-hidden rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
+        <Card className="relative group overflow-hidden rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
+
+            {/* Rating Badge */}
+            <div className="absolute top-3 right-3 z-10">
+                <Badge className="bg-yellow-500 text-white flex items-center gap-1 px-2 py-1 rounded-full shadow-md">
+                    <Star size={14} className="fill-white" />
+                    {rating}
+                </Badge>
+            </div>
 
             {/* Image */}
             <div className="relative w-full h-[220px] overflow-hidden">
@@ -48,7 +56,7 @@ const DoctorCard = ({ doctor }) => {
                     <p className="font-medium text-gray-700">{experience}</p>
                 </div>
 
-                {/* Button (optional UX boost) */}
+                {/* Button */}
                 <Link href={`/all-apointments/${_id}`}>
                     <Button className="mt-3 w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition">
                         View Details

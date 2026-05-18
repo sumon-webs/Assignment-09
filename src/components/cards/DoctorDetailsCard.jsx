@@ -1,8 +1,17 @@
+import { Badge } from "@heroui/react";
+import { Star } from "lucide-react";
 import Image from "next/image";
 
 const DoctorDetailsCard = ({ doctor }) => {
     return (
-        <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-2xl overflow-hidden mt-23">
+        <div className=" relative max-w-7xl mx-auto bg-white shadow-lg rounded-2xl overflow-hidden mt-23">
+            {/* Rating */}
+            <div className="absolute top-3 left-12 z-10">
+                <Badge className="bg-yellow-500 text-white flex items-center gap-1 px-2 py-1 rounded-full shadow-md">
+                    <Star size={14} className="fill-white" />
+                    {doctor.rating}
+                </Badge>
+            </div>
 
             {/* Top Section */}
             <div className="flex flex-col md:flex-row">

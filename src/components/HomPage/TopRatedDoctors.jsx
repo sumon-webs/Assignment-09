@@ -1,11 +1,12 @@
-import DoctorCard from "@/components/cards/DoctorCard";
-import { getDoctorsData } from "@/lib/data";
+import { getTopRatedData } from "@/lib/data";
+import DoctorCard from "../cards/DoctorCard";
 import { Inbox } from "lucide-react";
 import { FaUserDoctor } from "react-icons/fa6";
 
-const AllApointmentsPage = async () => {
-    const data = await getDoctorsData()
-    const doctors = data?.data
+const TopRatedDoctors = async () => {
+    const data = await getTopRatedData()
+
+    const doctors = data.data
 
     if (!data.success) {
         return (
@@ -15,10 +16,9 @@ const AllApointmentsPage = async () => {
         );
     }
 
-
     return (
-        <div className=" container mx-auto ">
-            <h1 className=" md:text-2xl lg:text-3xl flex gap-1 justify-center font-semi-bold py-8"><FaUserDoctor /> All Available Doctors</h1>
+        <div className=" container mx-auto mt-8 md:mt-12 lg:mt-24">
+            <h1 className=" md:text-2xl lg:text-3xl flex gap-1 justify-center font-semi-bold py-8"><FaUserDoctor /> Top Doctors</h1>
             {
                 doctors.length === 0
                     ? <div className="flex flex-col items-center justify-center py-24 text-center">
@@ -31,7 +31,7 @@ const AllApointmentsPage = async () => {
                         </p>
                     </div>
                     :
-                    <div className=" grid grid-cols-1  md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className=" grid grid-cols-1  md:grid-cols-3  gap-4">
 
                         {
                             doctors.map(doctor => <DoctorCard key={doctor._id} doctor={doctor} />)
@@ -43,4 +43,4 @@ const AllApointmentsPage = async () => {
     );
 };
 
-export default AllApointmentsPage;
+export default TopRatedDoctors;
