@@ -8,21 +8,24 @@ import toast from "react-hot-toast";
 
 export function BookAppointModal({ doctor }) {
     const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const { data: session } = useSession()
     const user = session?.user
     const { _id, name, image } = doctor
-
     const [gender, setGender] = useState('')
 
     const handleAppoint = async (e) => {
         e.preventDefault();
-        setLoading(true)
-        const formData = new FormData(e.target);
+        setLoading(true);
 
+        const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
+
         const appointData = {
             doctorId: _id,
+            patientName:data.name,
+            userId: user?.id,
             userEmail: user?.email,
             doctorName: data.doctorName,
             date: data.date,
@@ -30,22 +33,29 @@ export function BookAppointModal({ doctor }) {
             reason: data.reason,
             number: data.number,
             gender: gender
-        }
-        const datas = await postAppointData(appointData)
+        };
+        console.log(appointData)
 
-        if (datas.success) {
-            toast.success(datas.message)
-            setLoading(false)
-        }
-        if (!datas.success) {
-            toast.error(datas.message)
-            setLoading(false)
+        const res = await postAppointData(appointData);
+
+        setLoading(false);
+
+        if (res.success) {
+            toast.success(res.message);
+
+            e.target.reset();
+            setGender("");
+            setOpen(false);
+        } else {
+            toast.error(res.message);
         }
     };
 
     return (
-        <Modal>
-            <Button variant="secondary">Get Appoint</Button>
+        <Modal open={open} onOpenChange={setOpen}>
+            <Button variant="secondary" onClick={() => setOpen(true)}>
+                Get Appoint
+            </Button>
             <Modal.Backdrop>
                 <Modal.Container placement="auto">
                     <Modal.Dialog className="sm:max-w-lg">
@@ -91,10 +101,11 @@ export function BookAppointModal({ doctor }) {
                                             <Label>Gender</Label>
 
                                             <Select
-                                                selectedKeys={gender ? [gender] : []}
                                                 onSelectionChange={(keys) => {
-                                                    const value = Array.from(keys)[0];
-                                                    setGender(value);
+                                                    const value = [...(keys || [])][0];
+                                                    if (typeof value === "string") {
+                                                        setGender(value);
+                                                    }
                                                 }}
                                                 isRequired
                                             >
@@ -121,7 +132,7 @@ export function BookAppointModal({ doctor }) {
 
                                     <div className=" flex gap-2">
                                         {/* Date */}
-                                        <DateField className={'w-[50%]'} name="date">
+                                        <DateField isRequired className={'w-[50%]'} name="date">
                                             <Label>Date</Label>
                                             <DateField.Group>
                                                 <DateField.Input>{(segment) => <DateField.Segment segment={segment} />}</DateField.Input>
@@ -147,7 +158,9 @@ export function BookAppointModal({ doctor }) {
                                         <Button slot="close" variant="secondary">
                                             Cancel
                                         </Button>
-                                        <Button type="submit">{loading ? "Booking..." : "Submit"}</Button>
+                                        <Button type="submit">
+                                            {loading ? "Booking..." : "Submit"}
+                                        </Button>
                                     </div>
                                 </form>
                             </Surface>

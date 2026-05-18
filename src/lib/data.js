@@ -27,3 +27,10 @@ export const postAppointData = async (appointData) => {
     const data = await res.json()
     return data
 }
+
+export const getMyAppointData = async (userId) =>{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/appoints/${userId}`)
+    const data = await res.json()
+
+    return data
+}
