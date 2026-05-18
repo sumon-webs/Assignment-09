@@ -13,30 +13,54 @@ import {
 } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaGoogle } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { FaGoogle, FaSpinner } from "react-icons/fa6";
 
 function RegisterPage() {
+    const [loading, setLoading] = useState(false)
+
+
+    const router = useRouter()
+    const [error, setError] = useState()
+
+
     const onSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
 
         const formData = new FormData(e.currentTarget);
         const userData = Object.fromEntries(formData.entries());
 
         console.log(userData);
-        
+
         const { data, error } = await authClient.signUp.email({
-            name: "John Doe", // required
-            email: "john.doe@example.com", // required
-            password: "password1234", // required
-            image: "https://example.com/image.png",
-            callbackURL: "https://example.com/callback",
+            name: userData.name, // required
+            email: userData.email, // required
+            password: userData.password, // required
+            image: userData.imageUrl,
         });
+        if (data) {
+            toast.success("Log in success")
+            router.push('/log-in')
+            setLoading(false)
+        }
+        if (error) {
+            setError(error.message)
+            setLoading(false)
+        }
     };
 
     return (
         <div className=" container mx-auto mt-23 bg-gray-100 px-4">
 
-            <Card className=" max-w-sm  mx-auto shadow-xl shadow-blue-400  rounded-2xl">
+            <Card className=" max-w-sm mx-auto shadow-xl shadow-blue-400 rounded-2xl">
+                {error && (
+                    <p className="text-red-600 text-xs text-center font-medium">
+                        {error}
+                    </p>
+                )}
 
                 <h1 className="text-2xl font-bold text-center mb-6">
                     <div className="rounded-2xl  ">
@@ -93,7 +117,7 @@ function RegisterPage() {
                         name="password"
                         type="password"
                         validate={(value) => {
-                            if (value.length < 8) {
+                            if (value.length < 6) {
                                 return "Password must be at least 8 characters";
                             }
                             if (!/[A-Z]/.test(value)) {
@@ -135,7 +159,7 @@ function RegisterPage() {
                     {/* Buttons */}
                     <div className="flex gap-2 pt-2">
                         <Button type="submit" className={'w-full'} >
-                            Log in
+                            {loading ? <FaSpinner className="animate-spin"/> : "Sing in"}
                         </Button>
                     </div>
 
