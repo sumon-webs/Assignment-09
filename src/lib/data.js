@@ -1,8 +1,17 @@
-export const getDoctorsData = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctors`)
-    const data = await res.json()
-    return data
-}
+export const getDoctorsData = async (token) => {
+    console.log(token)
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/doctors`,
+        {
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    const data = await res.json();
+    return data;
+};
 
 export const getDoctorDetails = async (id) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/doctors/${id}`)
@@ -28,9 +37,10 @@ export const postAppointData = async (appointData) => {
     return data
 }
 
-export const getMyAppointData = async (userId) =>{
+export const getMyAppointData = async (userId) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/appoints/${userId}`)
     const data = await res.json()
 
     return data
 }
+
