@@ -1,13 +1,16 @@
 import { NextResponse } from 'next/server'
 import { auth } from './lib/auth'
-import { headers } from 'next/headers'
 
 export async function proxy(request) {
     const session = await auth.api.getSession({
-        headers: headers()
+        headers: request.headers
     });
 
-    if (!session) {
+    const { pathname } = request.nextUrl;
+
+    const isProtected = pathname.startsWith('/dashboard');
+
+    if (!session && isProtected) {
         return NextResponse.redirect(new URL('/log-in', request.url));
     }
 
@@ -15,5 +18,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-    matcher: [ '/dashboard'],
+    matcher: ['/dashboard/:path*'],
 };

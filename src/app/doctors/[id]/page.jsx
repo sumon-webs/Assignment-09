@@ -1,6 +1,8 @@
 import DoctorDetailsCard from "@/components/cards/DoctorDetailsCard";
 import { getDoctorDetails } from "@/lib/data";
-
+export const metadata = {
+    title: "DocAppoint || All Doctors",
+};
 const DoctorDetialsPage = async ({ params }) => {
     const { id } = await params
     const data = await getDoctorDetails(id)
