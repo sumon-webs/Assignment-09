@@ -62,7 +62,7 @@ const NavBar = () => {
                 {/* Desktop Nav */}
                 <div className="hidden lg:flex items-center gap-8 font-medium text-slate-700">
                     <NavActiveLink href={"/"}>Home</NavActiveLink>
-                    <NavActiveLink href={"/all-apointments"}>All Appointments</NavActiveLink>
+                    <NavActiveLink href={"/doctors"}>All Appointments</NavActiveLink>
                     <NavActiveLink href={"/dashboard"}>Dashboard</NavActiveLink>
                 </div>
 
@@ -139,7 +139,7 @@ const NavBar = () => {
                     {/* Nav Links */}
                     <div className="flex flex-col gap-4 font-medium text-slate-700">
                         <NavActiveLink href={"/"}>Home</NavActiveLink>
-                        <NavActiveLink href={"/all-apointments"}>All Appointments</NavActiveLink>
+                        <NavActiveLink href={"/doctors"}>All Appointments</NavActiveLink>
                         <NavActiveLink href={"/dashboard"}>Dashboard</NavActiveLink>
                     </div>
 

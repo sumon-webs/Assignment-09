@@ -3,6 +3,10 @@ import { auth } from "@/lib/auth";
 import { getMyAppointData } from "@/lib/data";
 import { headers } from "next/headers";
 
+export const metadata = {
+    title: "DocAppoint || DashBoard",
+};
+
 const DashBoardPage = async () => {
     const session = await auth.api.getSession({
         headers: await headers()

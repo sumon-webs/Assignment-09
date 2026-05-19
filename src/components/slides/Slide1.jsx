@@ -97,7 +97,7 @@ const Slide1 = () => {
                             width={520}
                             height={520}
                             priority
-                            className="relative z-10 object-contain"
+                            className="relative w-auto h-auto z-10 object-contain"
                         />
 
                         {/* Floating Badge */}

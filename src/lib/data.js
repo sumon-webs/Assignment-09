@@ -1,16 +1,21 @@
-export const getDoctorsData = async (token) => {
-    console.log(token)
-    const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/doctors`,
-        {
-            headers: {
-                authorization: `Bearer ${token}`,
-            },
-        }
+export const getDoctorsData = async (token, search) => {
+    const url = new URL(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/doctors`
     );
 
-    const data = await res.json();
-    return data;
+    if (search) {
+        url.searchParams.set("search", search);
+    }
+
+    const res = await fetch(url.toString(), {
+        method: "GET",
+        headers: {
+            authorization: `Bearer ${token}`,
+        },
+        cache: "no-store",
+    });
+
+    return res.json();
 };
 
 export const getDoctorDetails = async (id) => {

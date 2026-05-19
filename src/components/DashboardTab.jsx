@@ -68,7 +68,7 @@ const DashboardTab = ({ bookings, user }) => {
                                         </p>
 
                                         {/* Button (optional) */}
-                                        <Link href={'/all-apointments'}>
+                                        <Link href={'/doctors'}>
                                             <button className="mt-4 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                                                 Book Now
                                             </button>
@@ -104,7 +104,7 @@ const DashboardTab = ({ bookings, user }) => {
                                         </p>
 
                                         {/* Button (optional) */}
-                                        <Link href={'/all-apointments'}>
+                                        <Link href={'/doctors'}>
                                             <button className="mt-4 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                                                 Book Now
                                             </button>

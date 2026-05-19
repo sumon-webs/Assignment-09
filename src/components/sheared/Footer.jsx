@@ -53,7 +53,7 @@ const Footer = () => {
                             Home
                         </NavActiveLink>
 
-                        <NavActiveLink href={"/all-apointments"}>
+                        <NavActiveLink href={"/doctors"}>
                             All Appointments
                         </NavActiveLink>
 

@@ -57,7 +57,7 @@ const DoctorCard = ({ doctor }) => {
                 </div>
 
                 {/* Button */}
-                <Link href={`/all-apointments/${_id}`}>
+                <Link href={`/doctors/${_id}`}>
                     <Button className="mt-3 w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition">
                         View Details
                     </Button>
