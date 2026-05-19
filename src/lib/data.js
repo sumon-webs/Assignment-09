@@ -1,4 +1,4 @@
-export const getDoctorsData = async (token, search) => {
+export const getDoctorsData = async (search) => {
     const url = new URL(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/doctors`
     );
@@ -7,13 +7,11 @@ export const getDoctorsData = async (token, search) => {
         url.searchParams.set("search", search);
     }
 
-    const res = await fetch(url.toString(), {
-        method: "GET",
-        headers: {
-            authorization: `Bearer ${token}`,
-        },
-        cache: "no-store",
-    });
+    const res = await fetch(url.toString());
+
+    if (!res.ok) {
+        throw new Error("Failed to fetch doctors data");
+    }
 
     return res.json();
 };

@@ -1,8 +1,6 @@
 import DoctorCard from "@/components/cards/DoctorCard";
 import SearchDoctors from "@/components/SearchDoctor";
-import { auth } from "@/lib/auth";
 import { getDoctorsData } from "@/lib/data";
-import { headers } from "next/headers";
 import { FaUserDoctor } from "react-icons/fa6";
 
 export const metadata = {
@@ -13,14 +11,7 @@ const AllDoctorsPage = async ({ searchParams }) => {
     const params = await searchParams;
 
     const search = params?.search;
-
-    console.log(search);
-
-    const { token } = await auth.api.getToken({
-        headers: await headers()
-    });
-
-    const data = await getDoctorsData(token, search);
+    const data = await getDoctorsData( search);
 
     const doctors = data?.data || [];
 
